@@ -1,13 +1,25 @@
-import React from 'react'
+import { useContext, useEffect, useState } from 'react'
+import { ShopContext } from '../context/ShopContext';
 
-const RelatedProducts = () => {
+const RelatedProducts = ({category,subCategory}) => {
 
-    const {products} = useContext(ShopContext);
-    const [related, setRelated] = React.useState(products);
+  const productss = useContext(ShopContext);
+  
+    if (!productss) {
+      throw new Error("Component must be wrapped with ShopContextProvider");
+    }
 
-    React.useEffect(() => {
-        const filtered = products.filter(item => item.bestseller === true);
-        setRelated(filtered);
+    const {products} = productss;
+    const [related, setRelated] = useState(products);
+
+    useEffect(() => {
+        if (products.length > 0) {
+            let productsCopy = products.slice();
+
+            productsCopy = productsCopy.filter((item) => category === item.category);
+            productsCopy = productsCopy.filter((item) => category === item.subCategory);
+        } 
+
     }, [products]);
   return (
     <div>RelatedProducts</div>
