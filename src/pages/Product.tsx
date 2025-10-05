@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import { ShopContext } from '../context/ShopContext';
 import { useParams } from 'react-router-dom';
 import { assets } from '../assets/assets';
+import RelatedProducts from '../components/RelatedProducts';
 
 const Product = () => {
 
@@ -12,7 +13,7 @@ const Product = () => {
   }
 
   const {productId} = useParams();
-  const {products} = productss;
+  const {products, currency, addToCart } = productss;
   const [image, setImage] = React.useState('');
   const [size, setSize] = React.useState('');
   const [productData, setProductData] = React.useState<
@@ -86,7 +87,7 @@ const Product = () => {
 
               </div>
             </div>
-            <button className='bg-black text-white px-8 py-3 text-sm active:bg-gray-700 cursor-pointer'>ADD TO CART</button>
+            <button onClick={()=>addToCart(productData._id,size)} className='bg-black text-white px-8 py-3 text-sm active:bg-gray-700 cursor-pointer'>ADD TO CART</button>
             <hr className=' mt-8 sm:w-4/5' />
             <div className=' text-sm text-gray-500 mt-5 flex flex-col gap-1'>
                 <p>100% Original Product</p>
@@ -107,6 +108,9 @@ const Product = () => {
             <p>E-commerce platforms allow businesses to showcase their products or services, manage inventory, process payments securely, and handle shipping and logistics. Customers can browse through a wide range of products, read reviews, compare prices, and make purchases from the comfort of their homes.</p>
         </div>
       </div>
+
+      {/* Related Product */}
+      <RelatedProducts category={productData.category} subCategory={productData.subCategory} />
     </div>
   ) : null;
 }

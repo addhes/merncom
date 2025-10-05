@@ -18,8 +18,14 @@ type MapProuctType = {
 }
 
 const Collection = () => {
+
+  const shopContext = useContext(ShopContext);
+
+if (!shopContext) {
+  throw new Error("Component must be wrapped with ShopContextProvider");
+}
   
-  const { products, search, showSearch } = useContext(ShopContext)
+  const { products, search, showSearch } = shopContext
   const [showfilter, setShowFilter] = React.useState(true);
   const [filteredProducts, setFilteredProducts] = React.useState<MapProuctType[]>([]);
   const [categoryFilter, setCategoryFilter] = React.useState<string[]>([]);
