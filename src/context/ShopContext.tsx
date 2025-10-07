@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { products } from "../assets/assets";
 import { toast } from "react-toastify";
+import { useNavigate, type NavigateFunction } from "react-router-dom";
 
 type ShopContextType = {
   products: typeof products;
@@ -15,7 +16,8 @@ type ShopContextType = {
   addToCart: (itemId: string, size: string) => Promise<void>;
   getCartCount: () => number;
   updateQuantity: (itemId: string, size: string, quantity: number) => void;
-  getCartAmount: () => Promise<number>;
+  getCartAmount: () => number;
+  navigate: NavigateFunction;
 };
 
 type CartType = {
@@ -38,6 +40,7 @@ const ShopContextProvider = ({ children }: ShopContextProviderProps) => {
   const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState(true);
   const [cartItems, setCartItems] = useState<CartType>({});
+  const navigate = useNavigate();
 
   // Fungsi untuk menambahkan produk ke keranjang belanja (cart)
   const addToCart = async (itemId: string, size: string) => {
@@ -98,7 +101,7 @@ const ShopContextProvider = ({ children }: ShopContextProviderProps) => {
     setCartItems(cartData);
   }
 
-  const getCartAmount = async () => {
+  const getCartAmount = (): number => {
     let totalAmount = 0;
     for (const items in cartItems) {
       let itemInfo = products.find(product => product._id === items);
@@ -133,6 +136,7 @@ const ShopContextProvider = ({ children }: ShopContextProviderProps) => {
     getCartCount,
     updateQuantity,
     getCartAmount,
+    navigate,
   };
 
   return (
